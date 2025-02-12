@@ -1,10 +1,8 @@
 # Graveyard
 
 <p align="center">
-    <img src="/assets/Graveyard_Banner.png" style="object-fit: cover; height: 400px; width: 600px; object-position: center;">
+    <img src="assests/Graveyard_Banner.png" style="object-fit: cover; height: 400px; width: 600px; object-position: center;">
 </p>
-
-> Basically graveyard of all your insecurities while coding.
 
 This repository is aimed to target the beginners in the coding to help them in boosting their confidence.
 
