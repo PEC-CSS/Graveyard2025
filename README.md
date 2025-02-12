@@ -1,7 +1,7 @@
 # Graveyard
 
 <p align="center">
-    <img src="./assets/Graveyard_Banner.png" style="object-fit: cover; height: 400px; width: 600px; object-position: center;">
+    <img src="/assets/Graveyard_Banner.png" style="object-fit: cover; height: 400px; width: 600px; object-position: center;">
 </p>
 
 > Basically graveyard of all your insecurities while coding.
