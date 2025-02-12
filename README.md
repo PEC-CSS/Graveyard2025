@@ -25,6 +25,6 @@ After setting it up, if you wanna learn more, follow this article.
 
 ## Contributors
 
-<a href="https://github.com/PEC-CSS/graveyard/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=PEC-CSS/graveyard" />
+<a href="https://github.com/PEC-CSS/Graveyard2025/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=PEC-CSS/Graveyard2025" />
 </a>
