@@ -44,7 +44,7 @@ def count_dragon_blessed(X):
     return dp(0, True, False, -1)
 
 # Example usage:
-L, R = map(int, input("Enter L and R separated by space: ").split())
+L, R = map(int, input().split())
 # Count valid numbers in [0, R] and subtract those in [0, L-1]
 result = count_dragon_blessed(R) - count_dragon_blessed(L - 1)
-print("Number of Dragon-Blessed numbers:", result)
+print(result)
