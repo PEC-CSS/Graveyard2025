@@ -1,0 +1,93 @@
+
+body{
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    background-color: rosybrown;
+}
+
+.container{
+    margin-top: 2rem;
+    background-color: antiquewhite;
+    width: 60vh;
+    border-radius: 2rem;
+}
+
+h1{
+    text-align: center;
+    margin-top: 2rem;
+}
+
+.input{
+    display: flex;
+    flex-direction: row;
+    /* width: 70vh; */
+   justify-content: center;
+}
+
+.input input{
+    width: 40vh;
+    height: 2rem;
+    border-radius: 0.8rem;
+    padding: 0.3rem 1rem 0.3rem 1rem;
+    font-size: 1.5rem;
+    text-align: center;
+    border: 1px;
+}
+
+button{
+    margin-left: 1rem;
+    border-radius: 0.8rem;
+    font-size: 1.5rem;
+    border: 1px;
+    padding: 0.5rem;
+}
+
+.tasks{
+    margin-top: 1rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.task{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+.tasks ul{
+    width:52vh;
+}
+
+li{
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.add{
+    background-color: skyblue;
+}
+.add:active{
+    background-color: lightseagreen;
+    
+}
+
+.comp{
+    background-color: lightgreen;
+}
+.comp:active{
+    background-color: greenyellow;
+}
+
+.del{
+    background-color: lightcoral;
+}
+.del:active{
+    background-color: lightpink;
+}
+
+.comp[disabled]:active{
+    background-color: lightgreen;
+}
+
