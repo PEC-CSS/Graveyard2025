@@ -1,0 +1,55 @@
+body{
+    
+    display: flex;
+    justify-content: center;
+    background-color: lightslategray;
+    margin:0;
+    margin-top: 1rem;
+}
+h2{
+    
+    text-align: center;
+}
+
+.container{
+    width:70vw;
+    background-color: gray;
+    display: flex;
+    flex-direction: column;
+    border-radius: 1rem;
+    padding: 0.5rem;
+}
+
+.head{
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.details{
+    display: flex;
+    justify-content: center;
+}
+
+.search{
+    border-radius: 1rem;
+    padding: 0.5rem;
+    border: 1px;
+    font-size: 1rem;
+    background-color: azure;
+}
+
+.search:active{
+    background-color: #e6dcdc;
+}
+
+#ISO{
+    border-radius: 1rem;
+    padding: 0.5rem;
+    width:20rem;
+    text-align: center;
+    font-size: 1rem;
+}
+
+.list li {
+    font-size: 1.3rem;
+}
