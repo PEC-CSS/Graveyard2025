@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JOKES</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h2>ONLY JOKES</h2>
+        <div class="head">
+                        <div class="f">
+                            <h3>Category</h3>
+                            <input type="radio" id="c1" name="category" value="Programming">
+                            <label for="c1">Programming</label><br>
+                            <input type="radio" id="c2" name="category" value="Misc" checked>
+                            <label for="c2">Miscellaneous</label><br>
+                            <input type="radio" id="c3" name="category" value="Pun">
+                            <label for="c3">Pun</label><br>
+                            <input type="radio" id="c4" name="category" value="Spooky">
+                            <label for="c4">Spooky</label><br>
+                            <input type="radio" id="c5" name="category" value="Christmas">
+                            <label for="c5">Christmas
+                            </label>
+                        </div>
+                        <div class="f">
+                            <h3>Type</h3>
+                            <input type="radio" id="t1" name="type" value="single" checked>
+                            <label for="t1">Single-line joke</label><br>
+                            <input type="radio" id="t2" name="type" value="twopart">
+                            <label for="t2">Setup+Punchline
+                            </label>
+                        </div>
+                        <div class="f">
+                            <h3>Number of jokes</h3>
+                            <input type="radio" id="n1" name="number" value=1 checked>
+                            <label for="n1">1</label><br>
+                            <input type="radio" id="n2" name="number" value=2>
+                            <label for="n2">2</label><br>
+                            <input type="radio" id="n3" name="number" value=3>
+                            <label for="n3">3</label><br>
+                            <input type="radio" id="n4" name="number" value=4>
+                            <label for="n4">4</label><br>
+                            <input type="radio" id="n5" name="number" value=5>
+                            <label for="n5">5
+                            </label>
+                        </div>
+    </div>
+    <button class="submit">Get Joke</button>
+       <div class="joke">
+       </div>
+    </div>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/axios@1.6.7/dist/axios.min.js"></script>
+<script src="app.js"></script>
+</html>
