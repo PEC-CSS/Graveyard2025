@@ -3,10 +3,10 @@ import sys
 import warnings
 
 from datetime import datetime
-import os
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+# import os
+# sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from ai_agent.crew import AiAgents
+#from ai_agents.crew import AiAgents
 
 warnings.filterwarnings("ignore", category=SyntaxWarning, module="pysbd")
 # This main file is intended to be a way for you to run your
@@ -29,7 +29,7 @@ def run():
         'agent_name': 'ResearcherAgent',
     }
     
-    AiAgents().crew().kickoff(inputs=inputs)
+    # AiAgents().crew().kickoff(inputs=inputs)
 if __name__ == "__main__":
     run()
 
