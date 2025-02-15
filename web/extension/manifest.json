@@ -1,0 +1,21 @@
+{
+    "name":"image generator",
+    "version":"0.0.1",
+    "manifest_version":3,
+    "description": "Displays an image in the bottom-right corner of all web pages.",
+   "permissions": ["activeTab"],
+  "web_accessible_resources": [
+    {
+      "resources": ["image.png"],
+      "matches": ["<all_urls>"]
+    }
+  ],
+  "host_permissions": ["<all_urls>"],
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content.js"],
+      "css": ["style.css"]
+    }
+  ]
+}
