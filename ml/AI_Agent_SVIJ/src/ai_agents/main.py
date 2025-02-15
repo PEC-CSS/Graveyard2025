@@ -6,7 +6,7 @@ from datetime import datetime
 import os
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from ai_agents.crew import AiAgents
+from ai_agent.crew import AiAgents
 
 warnings.filterwarnings("ignore", category=SyntaxWarning, module="pysbd")
 # This main file is intended to be a way for you to run your
