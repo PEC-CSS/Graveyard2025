@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div>
+        <h1>Radar Chart</h1>
+
+        <div style="width: 400px; border: 1px solid black;"><canvas id="myChart"></canvas></div>
+    </div>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script>
+        const ctx = document.getElementById('myChart');
+
+        new Chart(ctx, {
+            type: 'radar',
+            data :{
+                labels: [
+                  'Strength', 'Endurance', 'Flexibility', 'Speed', 'Agility', 'Balance', 'Coordination'
+                ],
+                datasets: [{
+                  label: 'Athlete A',
+                  data: [80, 70, 60, 90, 85, 75, 80],
+                  fill: true,
+                  backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                  borderColor: 'rgb(255, 99, 132)',
+                  pointBackgroundColor: 'rgb(255, 99, 132)',
+                  pointBorderColor: '#fff',
+                  pointHoverBackgroundColor: '#fff',
+                  pointHoverBorderColor: 'rgb(255, 99, 132)'
+                }, {
+                  label: 'Athlete B',
+                  data: [60, 85, 75, 80, 70, 90, 65],
+                  fill: true,
+                  backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                  borderColor: 'rgb(54, 162, 235)',
+                  pointBackgroundColor: 'rgb(54, 162, 235)',
+                  pointBorderColor: '#fff',
+                  pointHoverBackgroundColor: '#fff',
+                  pointHoverBorderColor: 'rgb(54, 162, 235)'
+                }]
+              },
+              options: {
+                elements: {
+                  line: {
+                    borderWidth: 3
+                  }
+                }
+              },
+        });
+    </script>
+</body>
+
+</html>

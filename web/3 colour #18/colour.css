@@ -1,0 +1,35 @@
+body{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 800px;
+    background: beige;
+
+}
+.grid_container{
+    display: grid;
+    grid-template-columns: repeat(5,120px);
+    grid-template-rows: repeat(5,120px);
+    background-color: aliceblue;
+    padding: auto;
+}
+.grid{
+    display: flex;
+    align-items: center;
+    border: 5px;
+    border-color: black;
+}
+.colour_container{
+    justify-content: left;
+    align-items: left;
+    margin-right: 100px;
+}
+button{ 
+padding: 8px ;
+font-size: 14px;
+margin-left: 10px;
+cursor: pointer;
+border-radius: 5px;
+color: black;
+border: 2px solid black;
+}
