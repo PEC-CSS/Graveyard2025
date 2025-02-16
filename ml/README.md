@@ -62,7 +62,7 @@ Use the provided predict.py script to load the saved model and predict house pri
 _python predict.py --medinc 3.5_
 
 ---
-#Images
+# Images
 ---
 ## Scatter Plot
 ![Figure_1](https://github.com/user-attachments/assets/527d1f77-cafb-4d19-b59c-34df0d413c0d)
