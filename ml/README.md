@@ -65,11 +65,14 @@ _python predict.py --medinc 3.5_
 #Images
 ---
 ## Scatter Plot
+![Figure_1](https://github.com/user-attachments/assets/527d1f77-cafb-4d19-b59c-34df0d413c0d)
 
 
 
 ## Regression Plot:
+![Figure_2](https://github.com/user-attachments/assets/dee4f48d-6b01-49ad-ab93-20a48cedd612)
 
 
 ## Prediciton Result 
+![Screenshot 2025-02-16 230933](https://github.com/user-attachments/assets/14d5d91c-17fd-4c78-af9b-d9aef2f62f7e)
 
