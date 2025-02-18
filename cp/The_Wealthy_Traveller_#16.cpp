@@ -6,9 +6,12 @@
 #include <vector>
 using namespace std;
 
-
-int wealthy(vector<int>& v) {
-    int n=v.size();
+int main()
+{
+    int n;
+    cin>>n;
+    vector<int> v(n);
+    for(int i=0; i<n; i++) cin>>v[i];
     if(n==1) return v[0];
     int m1=v[0];
     int m2=max(v[0], v[1]);
@@ -24,10 +27,5 @@ int wealthy(vector<int>& v) {
         else
         m1 = m2;
     }
-    return m2;
-}
-int main()
-{
-    vector<int> v={1,2,3};
-    cout<<wealthy(v);
+    cout<<m2;
 }
