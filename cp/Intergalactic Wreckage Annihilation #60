@@ -1,0 +1,18 @@
+def survived_asteroids(asteroids):
+    result = []
+
+    for new_astd in asteroids:
+        while result and result[-1] > 0 and new_astd < 0:
+            last_asteroid = result[-1]
+            if abs(last_asteroid) <= abs(new_astd):
+                result.pop()
+            if abs(last_asteroid) >= abs(new_astd):
+                break
+        else:
+            result.append(new_astd)
+
+    return result
+
+n = int(input())
+asteroids = list(map(int, input().split()))
+print(survived_asteroids(asteroids))
