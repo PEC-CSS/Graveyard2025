@@ -1,0 +1,27 @@
+def survived_asteroids(asteroids):
+    positive_asteroids = []
+    negative_asteroids = []
+
+    for speed in asteroids:
+        if speed > 0:
+            positive_asteroids.append(speed)
+        else:
+            negative_asteroids.append(speed)
+
+    positive_asteroids.sort()
+    negative_asteroids.sort(reverse=True)
+
+    while positive_asteroids and negative_asteroids:
+        if positive_asteroids[0] > abs(negative_asteroids[0]):  
+            negative_asteroids.pop(0)  
+        elif positive_asteroids[0] == abs(negative_asteroids[0]):  
+            positive_asteroids.pop(0)
+            negative_asteroids.pop(0)
+        else:  
+            positive_asteroids.pop(0)
+
+    return negative_asteroids + positive_asteroids
+
+n = int(input())
+asteroids = list(map(int, input().split()))
+print(survived_asteroids(asteroids))
