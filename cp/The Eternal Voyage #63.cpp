@@ -21,17 +21,13 @@ int main(){
         return 0;
     }
     sum = 0;
-    int index = -1, greatest = 0, starting_index = 0;
+    int index = 0, greatest = 0;
     for(int i = 0; i < n; i++){
         sum += v[i];
         if(sum < 0){
             sum = 0;
-            starting_index = i + 1;
+            index = i + 1;
             continue;
-        }
-        if(sum > greatest){
-            greatest = sum;
-            index = starting_index;
         }
     }
     cout << index;
