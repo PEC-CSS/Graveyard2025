@@ -1,31 +1,24 @@
-def commonSubsequences(s1,s2):
+def lowestCommonSubsequence(s1, s2, m, n, memo):
     
-    def getSubsequences(sample):
-        subsequences= []
-        for i in range(len(sample)):
-            for j in range(i+1, len(sample)+1):
-                for k in range(1,len(sample)):
-                    subsequences.append(sample[i:j:k])
-                    
-        return subsequences
+    if m == 0 or n == 0:
+        return 0
 
-    s1 = getSubsequences(s1)
-    s2 = getSubsequences(s2)
-    common = []
-    for i in s1:
-        if i in s2:
-            common.append(i)
-    return common
+    if memo[m][n] != -1:
+        return memo[m][n]
 
-def lengthOfLongestCommonSubsequence(common):
-    length=0
-    for i in common:
-        if len(i) > length:
-            length = len(i)
-    return length
+    if s1[m - 1] == s2[n - 1]:
+        memo[m][n] = 1 + lowestCommonSubsequence(s1, s2, m - 1, n - 1, memo)
+        return memo[m][n]
+
+    memo[m][n] = max(lowestCommonSubsequence(s1, s2, m, n - 1, memo),
+                     lowestCommonSubsequence(s1, s2, m - 1, n, memo))
+    
+    return memo[m][n]
 
 s1 = input().replace("\"", "")
 s2 = input().replace("\"", "")
-common = commonSubsequences(s1,s2)
-print(lengthOfLongestCommonSubsequence(common))
-            
+
+m = len(s1)
+n = len(s2)
+memo = [[-1 for _ in range(n + 1)] for _ in range(m + 1)]
+print(lowestCommonSubsequence(s1, s2, m, n, memo))
