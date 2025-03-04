@@ -33,7 +33,7 @@ int main()
     for(int i = 0; i < n; i++){
         cin >> v[i];
     }
-    vector<long> current ={};
+    vector<long> current;
     compute(0, n, s, v, current);
     cout << s.size();
 }
