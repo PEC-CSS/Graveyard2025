@@ -3,7 +3,7 @@
 #include <vector>
 using namespace std;
 
-void compute(int index, int n, unordered_set <int> &s, vector<int> &v, vector<int> current){
+void compute(int index, int n, unordered_set <long> &s, vector<long> &v, vector<long> current){
 
     if(index == n){
         int q = 0;
@@ -27,13 +27,13 @@ int main()
 {
     int n;
     cin>>n;
-    vector<int> v(n);
+    vector<long> v(n);
     int q=0;
-    unordered_set<int> s;
+    unordered_set<long> s;
     for(int i = 0; i < n; i++){
         cin >> v[i];
     }
-    vector<int> current ={};
+    vector<long> current ={};
     compute(0, n, s, v, current);
     cout << s.size();
 }
