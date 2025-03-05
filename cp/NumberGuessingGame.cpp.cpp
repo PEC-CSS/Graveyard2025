@@ -2,30 +2,32 @@
 #include <iostream>
 using namespace std;
 int main(){
-    
+    int count = 0;
     bool flag = false;
     
     
     int randomNumber = rand() % 100 + 1;// 1 to 100 random number 
     while (flag == false){
-        std::cout << "enter a number";
+        cout << "Enter a number = ";
         int number  ;
-        std::cin >> number ;
+        cin >> number ;
         if(randomNumber==number){
            
             flag = true;
+            count ++;
         }
         if(randomNumber>number){
-           cout<<"the numebr is bigger than you guessed";
-           
+           cout<<"The numeber is bigger than you guessed\n";
+           count ++;
         }
         if(randomNumber<number){
-            cout<<"the numeber is smaller than you guessed";
-            
+            cout<<"the number is smaller than you guessed\n";
+            count ++;
          }
 
     }
     
-    std::cout<<"congratulation u guessed it right";
+    cout<<"congratulation u guessed it right\n";
+    cout<<"The number tries you took to guess was = "<<count;
     return 0;
 }
