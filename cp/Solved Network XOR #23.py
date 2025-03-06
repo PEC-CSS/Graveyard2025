@@ -6,7 +6,7 @@ def get_unique_xor_values(n, data_packets):
 
     @lru_cache(None)
     def dfs(state):
-        state = tuple(sorted(state))  # Maintain a canonical form
+        state = tuple(sorted(state))
         
         if state in visited:
             return
