@@ -1,14 +1,16 @@
 from itertools import combinations
+from functools import lru_cache
 
 def get_unique_xor_values(n, data_packets):
     xor_values = set()
-    states_done = set()
 
+    @lru_cache(None)
     def dfs(state):
-        state_tuple = tuple(sorted(state))
-        if state_tuple in states_done:
+        state = tuple(sorted(state))  # Maintain a canonical form
+        
+        if state in visited:
             return
-        states_done.add(state_tuple)
+        visited.add(state)
 
         xor_result = 0
         for value in state:
@@ -16,17 +18,15 @@ def get_unique_xor_values(n, data_packets):
         xor_values.add(xor_result)
 
         for x, y in combinations(range(len(state)), 2):
-            if state[x] == 0:
-                continue
-
-            new_state = state[:]
+            new_state = list(state)
             new_state[y] += new_state[x]
             new_state[x] = 0
-            new_state = [val for val in new_state if val != 0]
-
+            new_state = tuple(sorted(num for num in new_state if num != 0))
             dfs(new_state)
 
-    dfs(data_packets)
+    visited = set()
+    dfs(tuple(data_packets))
+    
     return len(xor_values)
 
 n = int(input())
