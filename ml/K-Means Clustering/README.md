@@ -86,7 +86,7 @@ The final DataFrame with the updated cluster labels is saved to customer_segment
 ---
 
 # Screenshots
-Below are some sample screenshots from the project (replace with your actual image links if available):
+Below are some sample screenshots from the project i took:
 
 ## Elbow Method Plot:
 
@@ -103,4 +103,7 @@ Below are some sample screenshots from the project (replace with your actual ima
 ## Cluster Centroids Visualization:
 
 ![Figure_4](https://github.com/user-attachments/assets/3c4ceeb6-39db-49cb-9fec-b2b8c9a599f4)
+
+---
+# THANK YOU FOR READING THIS :)
 
