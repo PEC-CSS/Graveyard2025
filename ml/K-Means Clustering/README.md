@@ -13,8 +13,7 @@ This project demonstrates how to perform K-Means Clustering on a customer shoppi
 - [Code Explanation]
 - [Results & Evaluation]
 - [Screenshots]
-- [License]
-- [Author]
+
 
 ---
 
