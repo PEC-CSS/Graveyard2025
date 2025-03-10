@@ -9,11 +9,13 @@ def extract_price(file, tag, class_name):
 def clean_price(price):
     return int(price.replace(",", "").replace("₹", "").replace("Rs. ", "").replace("INR", "").split('.')[0])
 
+def price_before_discount(file, tag, class_name):
+    return clean_price(extract_price(file, tag, class_name))
+
 def get_best_price(product):
     products = {
         "1": {
             "name": "Casio Fx 82MS Calculator",
-            "mrp": 625,
             "files": {
                 "Amazon": r"C:\Users\Naman Vasudev\Desktop\Price Tracker\Amazon-C.html",
                 "ToppersKit": r"C:\Users\Naman Vasudev\Desktop\Price Tracker\ToppersKitC.html",
@@ -28,11 +30,13 @@ def get_best_price(product):
                 "Amazon": ("span", "a-price-whole"),
                 "ToppersKit": ("span", "price-item price-item--regular"),
                 "Instamart": ("div", "sc-gEvEer iQcBUp _2XPBo")
+            },
+            "mrp_selectors": {             
+                "Instamart": ("div", "sc-gEvEer iQcBUp _2XPBo")
             }
         },
         "2": {
             "name": "Advanced Engineering Mathematics 10E",
-            "mrp": 1199,
             "files": {
                 "Amazon": r"C:\Users\Naman Vasudev\Desktop\Price Tracker\Amazon Book.html",
                 "Atlantic Books": r"C:\Users\Naman Vasudev\Desktop\Price Tracker\Atlantic Book.html",
@@ -47,11 +51,13 @@ def get_best_price(product):
                 "Amazon": ("span", "a-price-whole"),
                 "Atlantic Books": ("span", "money"),
                 "Wiley India": ("p", "pr-price")
+            },
+            "mrp_selectors": {
+                "Amazon": ("span", "a-offscreen")
             }
         },
         "3": {
             "name": "Whoop 4.0",
-            "mrp": 45000,
             "files": {
                 "Amazon": r"C:\Users\Naman Vasudev\Desktop\Price Tracker\Amazon Whoop.html",
                 "Flipkart": r"C:\Users\Naman Vasudev\Desktop\Price Tracker\Flipkart Whoop.html",
@@ -66,11 +72,14 @@ def get_best_price(product):
                 "Amazon": ("span", "a-price-whole"),
                 "Flipkart": ("div", "Nx9bqj CxhGGd yKS4la"),
                 "Hustle Culture": ("span", "price-item price-item--regular")
+            },
+            "mrp_selectors": {
+                "Flipkart": ("div","yRaY8j A6+E6v yKS4la")
             }
+
         },
         "4": {
             "name": "Fireboltt Brillia",
-            "mrp": 18999,
             "files": {
                 "Amazon": r"C:\Users\Naman Vasudev\Desktop\Price Tracker\Amazon.html",
                 "Flipkart": r"C:\Users\Naman Vasudev\Desktop\Price Tracker\Flipkart.html",
@@ -85,6 +94,9 @@ def get_best_price(product):
                 "Amazon": ("span", "a-price-whole"),
                 "Flipkart": ("div", "Nx9bqj CxhGGd"),
                 "Fireboltt": ("span", "money")
+            },
+            "mrp_selectors": {
+                "Amazon": ("span", "a-size-mini a-color-secondary aok-nowrap a-text-strike")
             }
         }
     }
@@ -95,20 +107,38 @@ def get_best_price(product):
     
     data = products[product]
     prices = {}
+    mrp = 0
     
+
+    for site, file in data["files"].items():
+        if site in data["mrp_selectors"]:
+            tag, class_name = data["mrp_selectors"][site]
+            mrp = price_before_discount(file, tag, class_name)
+            if mrp > 0:
+                break
+
     for site, file in data["files"].items():
         tag, class_name = data["selectors"].get(site, (None, None))
         prices[site] = clean_price(extract_price(file, tag, class_name))
     
+
     max_p = min(prices, key=prices.get)
-    d, p = round(((data["mrp"] - prices[max_p]) / data["mrp"]) * 100, 2), prices[max_p]
-    print(f"Product: {data['name']} (MRP=₹{data['mrp']})\n\nThe website offering the maximum discount is {max_p} with a discount of {d}%.\nPrice: ₹{p}\nURL: {data['urls'][max_p]}\nTo follow link press Ctrl and then click")
+    discount_percentage = round(((mrp - prices[max_p]) / mrp) * 100, 2)
+    best_price = prices[max_p]
+    
+    print(f"Product: {data['name']} (MRP=₹{mrp})\n")
+    print(f"The website offering the maximum discount is {max_p} with a discount of {discount_percentage}%.")
+    print(f"Price: ₹{best_price}")
+    print(f"URL: {data['urls'][max_p]}")
+    print("To follow the link, press Ctrl and then click.")
 
 print("Select a product:")
-print("1: Casio Fx 82MS Calculator - ₹625")
-print("2: Advanced Engineering Mathematics 10E - ₹1199")
-print("3: Whoop 4.0 - ₹45000")
-print("4: Fireboltt Brillia - ₹18999")
+print("1: Casio Fx 82MS Calculator")
+print("2: Advanced Engineering Mathematics 10E")
+print("3: Whoop 4.0")
+print("4: Fireboltt Brillia")
 
 choice = input("Enter the number of the product you want to check: ")
 get_best_price(choice)
+
+
