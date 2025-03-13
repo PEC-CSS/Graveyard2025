@@ -42,9 +42,11 @@ pip install numpy pandas nltk seaborn matplotlib scikit-learn beautifulsoup4
 ---
 
 ##  Usage
-1️ **Download the dataset**:  
-   - Make sure **IMDB_Dataset.csv** is in the same folder as the script.  
-
+1️ **Download the dataset**: 
+*Installation link-*    ``` 
+https://www.kaggle.com/datasets/lakshmi25npathi/imdb-dataset-of-50k-movie-reviews?resource=download ```
+ - Make sure **IMDB_Dataset.csv** is in the same folder as the script.  
+---
 2️ **Run the script**:  
 ```bash
 Sentiment_Analysis_Pipeline.py
