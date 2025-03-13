@@ -1,0 +1,6 @@
+anthropic
+pypdf2
+langchain-community
+langchain-text-splitters
+faiss-cpu
+sentence-transformers
