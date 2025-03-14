@@ -1,0 +1,11 @@
+os
+anthropic
+dotenv
+pygooglenews
+selenium
+webdriver-manager
+langchain_huggingface
+langchain_community
+langchain_text_splitters
+faiss-cpu
+sentence-transformers
