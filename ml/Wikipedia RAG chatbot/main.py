@@ -1,13 +1,13 @@
 import os
 import anthropic
 import wikipedia
+from dotenv import load_dotenv
 from langchain_community.vectorstores import FAISS
 from langchain_huggingface import HuggingFaceEmbeddings
 from langchain_text_splitters import RecursiveCharacterTextSplitter
-from datetime import datetime
 
-CLAUDE_API_KEY = "YOUR API KEY IN STRINGS"
-
+load_dotenv()
+CLAUDE_API_KEY = os.getenv("CLAUDE_API_KEY")
 client = anthropic.Anthropic(api_key=CLAUDE_API_KEY)
 
 def get_wikipedia_content(query, max_results=3):
@@ -60,7 +60,7 @@ def create_vector_store(articles):
     embeddings = HuggingFaceEmbeddings(model_name="sentence-transformers/all-MiniLM-L6-v2")
     vector_store = FAISS.from_texts(chunks, embeddings, metadatas=metadatas)
 
-    return vector_store, articles
+    return vector_store
 
 def format_citations(similar_docs, articles):
     citations = []
@@ -137,7 +137,7 @@ def wikipedia_chatbot():
             print(f"Found {len(articles)} relevant articles: {', '.join(article['title'] for article in articles)}")
             print("Processing information...")
 
-            vector_store, articles = create_vector_store(articles)
+            vector_store = create_vector_store(articles)
             answer, citations = get_answer(user_input, vector_store, articles)
 
             print("Chatbot:", answer)
