@@ -1,6 +1,6 @@
 # 📌 Sentiment Analysis of IMDB Movie Reviews
 
-This project is all about **teaching a machine to understand emotions in text!** I built a sentiment analysis pipeline that classifies **IMDB movie reviews** into **positive or negative** sentiments.  
+This project is all about **teaching a machine to understand emotions in text!** I built a sentiment analysis pipeline that classifies **IMDB movie reviews** into **positive or negative**  sentiments.  
 
 We dive into **data preprocessing, feature extraction (TF-IDF), training machine learning models (Logistic Regression & Naive Bayes), evaluating results, and visualizing predictions** with confusion matrices.  
 
