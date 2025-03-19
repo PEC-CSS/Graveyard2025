@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>XML DOM Visualizer</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        #error {
+            color: red;
+            margin: 10px 0;
+        }
+        .tree ul {
+            list-style-type: none;
+            padding-left: 20px;
+            margin: 0;
+        }
+        .element {
+            color: #005A9C;
+            font-family: monospace;
+            cursor: pointer;
+            padding: 2px 0;
+        }
+        .element:hover {
+            background-color: #f0f0f0;
+        }
+        .attribute {
+            color: #660E7A;
+            font-family: monospace;
+        }
+        .text {
+            color: #666;
+            font-style: italic;
+            font-family: monospace;
+        }
+        .toggle {
+            color: #999;
+            font-size: 0.8em;
+            margin-right: 5px;
+            cursor: pointer;
+        }
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <h1>XML DOM Visualizer</h1>
+    <input type="file" id="xmlFile" accept=".xml">
+    <div id="error"></div>
+    <div id="tree"></div>
+
+    <script>
+        document.getElementById('xmlFile').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const xmlString = e.target.result;
+                try {
+                    const parser = new DOMParser();
+                    const xmlDoc = parser.parseFromString(xmlString, 'application/xml');
+                    
+                    const errorNode = xmlDoc.querySelector('parsererror');
+                    if (errorNode) {
+                        throw new Error('Invalid XML: ' + errorNode.textContent);
+                    }
+
+                    const treeContainer = document.getElementById('tree');
+                    treeContainer.innerHTML = '';
+                    const ul = document.createElement('ul');
+                    ul.className = 'tree';
+                    
+                    // Ensure root element is displayed
+                    const rootLi = document.createElement('li');
+                    const rootElementDiv = document.createElement('div');
+                    rootElementDiv.className = 'element';
+                    rootElementDiv.textContent = xmlDoc.documentElement.nodeName;
+                    rootLi.appendChild(rootElementDiv);
+                    ul.appendChild(rootLi);
+
+                    const rootChildrenUl = document.createElement('ul');
+                    rootLi.appendChild(rootChildrenUl);
+                    
+                    processNode(xmlDoc.documentElement, rootChildrenUl);
+                    treeContainer.appendChild(ul);
+                    document.getElementById('error').textContent = '';
+                } catch (err) {
+                    document.getElementById('error').textContent = err.message;
+                }
+            };
+            reader.readAsText(file);
+        });
+
+        function processNode(node, parentElement) {
+            Array.from(node.childNodes).forEach(child => {
+                if (child.nodeType === Node.ELEMENT_NODE) {
+                    const li = document.createElement('li');
+                    const elementDiv = document.createElement('div');
+                    elementDiv.className = 'element';
+                    
+                    if (child.children.length > 0) {
+                        const toggle = document.createElement('span');
+                        toggle.className = 'toggle';
+                        toggle.textContent = '▶';
+                        toggle.onclick = () => toggleChildren(li);
+                        elementDiv.prepend(toggle);
+                    }
+                    
+                    elementDiv.append(document.createTextNode(child.nodeName));
+                    
+                    Array.from(child.attributes).forEach(attr => {
+                        const attrSpan = document.createElement('span');
+                        attrSpan.className = 'attribute';
+                        attrSpan.textContent = ` ${attr.name}="${attr.value}"`;
+                        elementDiv.appendChild(attrSpan);
+                    });
+                    
+                    li.appendChild(elementDiv);
+                    const childrenUl = document.createElement('ul');
+                    li.appendChild(childrenUl);
+                    parentElement.appendChild(li);
+                    
+                    processNode(child, childrenUl);
+                } else if (child.nodeType === Node.TEXT_NODE && child.nodeValue.trim()) {
+                    const textLi = document.createElement('li');
+                    textLi.className = 'text';
+                    textLi.textContent = `"${child.nodeValue.trim()}"`;
+                    parentElement.appendChild(textLi);
+                }
+            });
+        }
+
+        function toggleChildren(li) {
+            const childrenUl = li.querySelector('ul');
+            const toggle = li.querySelector('.toggle');
+            if (childrenUl) {
+                childrenUl.classList.toggle('hidden');
+                toggle.textContent = childrenUl.classList.contains('hidden') ? '▶' : '▼';
+            }
+        }
+    </script>
+</body>
+</html>
