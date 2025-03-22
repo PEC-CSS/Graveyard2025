@@ -17,7 +17,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser())    
 app.set("views", path.resolve("./views"));  
 
-MONGO_URL = "mongodb://localhost:27017/short-url";
+MONGO_URL = "YOUR_MONGO_URL";
 connectToMongoDB(MONGO_URL)
   .then(() => {
     console.log("MongoDB connected");
