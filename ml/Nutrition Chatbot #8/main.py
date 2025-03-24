@@ -7,7 +7,6 @@ import os
 
 from dotenv import load_dotenv
 
-from langchain_core.messages import HumanMessage, SystemMessage
 from langchain_mongodb import MongoDBAtlasVectorSearch
 from pymongo import MongoClient
 
@@ -73,12 +72,13 @@ results = retriever.invoke(query)
 if len(results)==0:
     print("Searching web for your answer...")
     from langchain_anthropic import ChatAnthropic
+    anthropic_api_key = os.getenv("ANTHROPIC_API_KEY")
     llm = ChatAnthropic(model="claude-3-7-sonnet-20250219",
     temperature=0,
     max_tokens=1024,
     timeout=None,
     max_retries=2,
-     api_key="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",)
+     api_key=anthropic_api_key,)
     
     result  =llm.invoke(("You are a professional nutrition science assistant . you generate to the point answers (short and concise) relevant to the questions . here is the question :"+ query))
 
