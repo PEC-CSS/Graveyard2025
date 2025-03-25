@@ -79,9 +79,7 @@ python main.py
 ```
 /CodeOptimizer
 ├── /data
-│   ├── file1.py
-│   └── file2.py
-├── /optimized_code
+│   ├── user_code.py
 ├── main.py
 ├── requirements.txt
 └── README.md
