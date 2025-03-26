@@ -1,100 +1,110 @@
-# 📚 AI-Powered Nutrition Q&A System with Excel + Web Data + Claude API
+📚 AI-Powered Nutrition Q&A System with Excel + Web Data + Claude API
+This project is a Flask-based AI application that answers nutrition-related questions by combining data from:
 
-This project is a **Flask-based AI application** that answers nutrition-related questions by combining data from:  
-1. **Excel File:** Nutrition data is embedded into a FAISS vector database.  
-2. **Website Content:** Content is dynamically embedded using FAISS for quick searches.  
-3. **Claude API:** Provides responses based on combined data or general knowledge when required.  
+Excel File: Nutrition data is embedded into a vector database.
+Website Content: Content is dynamically embedded for quick searches.
+Claude API: Provides responses based on combined data or general knowledge when required.
 
----
 
-## ✨ **Unique Features**
-- 🔥 **Hybrid Search with Priority:**  
-   - First checks Excel FAISS data.  
-   - If no match, checks website content.  
-   - Falls back to Claude’s general knowledge if necessary.  
+✨ Unique Features
 
-- 📊 **Excel Data Integration:**  
-   - Embeds `nutrition_data.xlsx` into a FAISS vector database.  
-   - Automatically updates and retrieves results from FAISS.  
+🔥 Hybrid Search with Priority:
 
-- 🌐 **Website Content Embedding:**  
-   - Splits website content into smaller chunks.  
-   - Searches and retrieves the most relevant context for answering questions.  
+First checks Excel data.
+If no match, checks website content.
+Falls back to Claude's general knowledge if necessary.
 
-- 🤖 **Claude API for Final Response:**  
-   - Combines results from Excel, website, and general knowledge.  
 
----
+📊 Excel Data Integration:
 
-## 🚀 **How the System Works**
-1. **Excel Embeddings Creation:**  
-   - Reads `nutrition_data.xlsx` and converts rows to text.  
-   - Generates embeddings using HuggingFace's `all-MiniLM-L6-v2`.  
-   - Saves FAISS index to `excel_faiss_index`.  
+Embeds nutrition_data.xlsx into a vector database.
+Automatically updates and retrieves results.
 
-2. **Handling Incoming Questions:**  
-   - Receives a question and content from the API.  
-   - Splits content and generates embeddings for similarity search.  
-   - Retrieves the most relevant context from:  
-      - 📊 Excel Data  
-      - 🌐 Website Content  
 
-3. **Claude API Interaction:**  
-   - Creates a structured prompt combining extracted content.  
-   - Sends the prompt to Claude API for generating a response.  
+🌐 Website Content Embedding:
 
----
+Splits website content into smaller chunks.
+Searches and retrieves the most relevant context for answering questions.
 
-## 📡 **API Usage**
 
-### 1. `/api/ask`
-- **Method:** `POST`  
-- **Description:** Accepts a question and content, then returns an AI-generated answer.  
-- **Request Format:**
-```json
-{
+🤖 Claude API for Final Response:
+
+Combines results from Excel, website, and general knowledge.
+
+
+
+
+🚀 How the System Works
+
+Excel Embeddings Creation:
+
+Reads nutrition_data.xlsx and converts rows to text.
+Generates embeddings using HuggingFace's all-MiniLM-L6-v2.
+Saves embeddings to MongoDB.
+
+
+Handling Incoming Questions:
+
+Receives a question and content from the API.
+Splits content and generates embeddings for similarity search.
+Retrieves the most relevant context from:
+
+📊 Excel Data
+🌐 Website Content
+
+
+
+
+Claude API Interaction:
+
+Creates a structured prompt combining extracted content.
+Sends the prompt to Claude API for generating a response.
+
+
+
+
+📡 API Usage
+1. /api/ask
+
+Method: POST
+Description: Accepts a question and content, then returns an AI-generated answer.
+Request Format:
+
+jsonCopy{
   "question": "What is the nutritional value of spinach?",
-  "content": "Content scraped from a website"
+  "content": "Optional website content to search"
 }
-```
-- **Response Format:**
-```json
-{
-  "answer": "Spinach is rich in vitamins A, C, and K, and contains iron and calcium."
+
+Response Format:
+
+jsonCopy{
+  "answer": "Spinach is rich in vitamins A, C, and K, and contains iron and calcium.",
+  "source": "local_sources" // or "web_search"
 }
-```
 
----
+📖 Usage Instructions
+1. Prerequisites
 
-## 📖 **Usage Instructions**
+Python 3.9+
+MongoDB running locally or with a connection string
 
-### 1. **Clone the Repository**
-```bash
-git clone https://github.com/your-repo/ai-nutrition-chatbot.git
-cd ai-nutrition-chatbot
-```
+2. Clone the Repository
+bashCopygit clone https://github.com/your-username/nutrition-qa-system.git
+cd nutrition-qa-system
+3. Set Up Environment
 
-### 2. **Set Up Environment**
-- Install required Python packages:
-```bash
-pip install -r requirements.txt
-```
+Create a virtual environment (optional but recommended):
 
-### 3. **Set API Key for Claude**
-- Create a `.env` file in the root directory:
-```
-CLAUDE_API_KEY=your_claude_api_key_here
-```
+bashCopypython -m venv venv
+source venv/bin/activate  # On Windows, use `venv\Scripts\activate`
 
-### 4. **Run the Flask Application**
-```bash
-python app.py
-```
-- Access the application at:
-```
-http://127.0.0.1:5000
-```
+Install required Python packages:
 
----
+bashCopypip install -r requirements.txt
+4. Configure Environment Variables
 
-🎉 **Ready to explore AI-powered nutrition answers!** 🎉
+Create a .env file in the root directory:
+
+CopyCLAUDE_API_KEY=your_claude_api_key_here
+MONGO_URI=your_mongodb_connection_string  # Optional, defaults to localhost
+5. Prepare Data Files

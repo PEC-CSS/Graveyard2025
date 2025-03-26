@@ -1,20 +1,48 @@
-from flask import Flask, request, jsonify, send_file
-import anthropic
 import os
 import dotenv
+import pickle
+import requests
 import pandas as pd
+import anthropic
+from flask import Flask, request, jsonify, send_from_directory
+from flask_cors import CORS
+from pymongo import MongoClient
 from langchain_text_splitters import RecursiveCharacterTextSplitter
-from langchain_community.vectorstores import FAISS
 from langchain_huggingface import HuggingFaceEmbeddings
 
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
 app = Flask(__name__)
+CORS(app)
 dotenv.load_dotenv()
 
 CLAUDE_API_KEY = os.getenv("CLAUDE_API_KEY")
 client = anthropic.Anthropic(api_key=CLAUDE_API_KEY)
 
-EXCEL_FILE_PATH = "N:/static/nutrition_data.xlsx"
-EXCEL_VECTOR_DB_PATH = "N:/static/excel_faiss_index"
+MONGO_URI = os.getenv("MONGO_URI", "mongodb://localhost:27017/")
+mongo_client = MongoClient(MONGO_URI)
+db = mongo_client["nutrition_science_rag"]
+collection = db["embeddings"]
+
+EXCEL_FILE_PATH = os.path.join(BASE_DIR, "static", "nutrition_data.xlsx")
+HTML_FILE_PATH = os.path.join(BASE_DIR, "static", "website_nutritional.html")
+
+def save_embeddings_to_mongo(embeddings_data):
+    chunks = []
+    chunk_size = 5 * 1024 * 1024 
+    for i in range(0, len(embeddings_data), chunk_size):
+        chunk = embeddings_data[i: i + chunk_size]
+        chunks.append(chunk)
+    collection.delete_many({"type": "excel_embeddings"})
+    for i, chunk in enumerate(chunks):
+        collection.insert_one({"type": "excel_embeddings", "chunk_number": i, "data": chunk})
+
+def load_embeddings_from_mongo():
+    cursor = collection.find({"type": "excel_embeddings"}).sort("chunk_number", 1)
+    all_data = b"".join(chunk["data"] for chunk in cursor)
+    if all_data:
+        return pickle.loads(all_data)
+    return None
 
 def create_excel_embeddings():
     df = pd.read_excel(EXCEL_FILE_PATH, engine='openpyxl')
@@ -23,46 +51,81 @@ def create_excel_embeddings():
         row_dict = row.dropna().to_dict()
         row_text = ", ".join([f"{k}: {v}" for k, v in row_dict.items()])
         rows_as_text.append(row_text)
+    
     embeddings = HuggingFaceEmbeddings(model_name="sentence-transformers/all-MiniLM-L6-v2")
-    faiss_db = FAISS.from_texts(rows_as_text, embeddings)
-    faiss_db.save_local(EXCEL_VECTOR_DB_PATH)
-    return faiss_db
+    embedded_data = embeddings.embed_documents(rows_as_text)
+    
+    data_to_store = pickle.dumps({"rows": rows_as_text, "embeddings": embedded_data})
+    save_embeddings_to_mongo(data_to_store)
+    
+    return {"rows": rows_as_text, "embeddings": embedded_data}
 
-if os.path.exists(EXCEL_VECTOR_DB_PATH):
-    faiss_db = FAISS.load_local(
-        EXCEL_VECTOR_DB_PATH,
-        HuggingFaceEmbeddings(model_name="sentence-transformers/all-MiniLM-L6-v2"),
-        allow_dangerous_deserialization=True
-    )
-else:
-    faiss_db = create_excel_embeddings()
+def searxng_search(query, instance='https://searx.be'):
+    params = {
+        'q': query,
+        'format': 'json'
+    }
+    
+    try:
+        response = requests.get(f'{instance}/search', params=params, timeout=10)
+        data = response.json()
+        
+        results = []
+        for result in data.get('results', [])[:5]:
+            results.append({
+                'title': result.get('title', ''),
+                'link': result.get('url', ''),
+                'snippet': result.get('content', '')
+            })
+        
+        return results
+    except Exception as e:
+        print(f"Search error: {e}")
+        return []
+
+embeddings_data = load_embeddings_from_mongo()
+if not embeddings_data:
+    embeddings_data = create_excel_embeddings()
 
 @app.route('/')
 def index():
-    return send_file('N:/static/webiste final nutritional.html')
+    return send_from_directory(os.path.join(BASE_DIR, 'static'), 'website_nutritional.html')
 
 @app.route('/api/ask', methods=['POST'])
 def ask_question():
     data = request.get_json()
     question = data.get('question')
-    content = data.get('content')
-    if not question or not content:
-        return jsonify({'error': 'Missing question or content'}), 400
+    content = data.get('content', '')
+    
+    if not question:
+        return jsonify({'error': 'Missing question'}), 400
+    
     try:
-        splitter = RecursiveCharacterTextSplitter(chunk_size=500, chunk_overlap=50)
-        chunks = splitter.split_text(content)
         embeddings = HuggingFaceEmbeddings(model_name="sentence-transformers/all-MiniLM-L6-v2")
-        db = FAISS.from_texts(chunks, embeddings)
-        similar_docs = db.similarity_search(question, k=3)
-        context = " ".join(doc.page_content for doc in similar_docs)
-        excel_results = faiss_db.similarity_search(question, k=3)
-        excel_context = " ".join(doc.page_content for doc in excel_results)
-        if not context.strip() and excel_context.strip():
-            return jsonify({'answer': f"Here is what I found from the Excel data:\n{excel_context}"})
+        
+        if content:
+            splitter = RecursiveCharacterTextSplitter(chunk_size=500, chunk_overlap=50)
+            chunks = splitter.split_text(content)
+            embedded_chunks = embeddings.embed_documents(chunks)
+            
+            best_match_index = max(
+                range(len(embedded_chunks)),
+                key=lambda i: embeddings.cosine_similarity(embedded_chunks[i], embeddings.embed_query(question)),
+            )
+            context = chunks[best_match_index]
+        else:
+            context = ""
+        
+        best_excel_match_index = max(
+            range(len(embeddings_data["embeddings"])),
+            key=lambda i: embeddings.cosine_similarity(embeddings_data["embeddings"][i], embeddings.embed_query(question)),
+        )
+        excel_context = embeddings_data["rows"][best_excel_match_index]
+        
         prompt = f"""
         You are a helpful assistant that answers questions about a website's content and nutritional information.
         Use ONLY the following content to answer the question.
-        If the answer cannot be found in the content, say "I don't have information about that from this webpage or the Excel file."
+        If the answer cannot be found in the content, respond with 'NO_ANSWER_FOUND'.
         WEBSITE CONTENT:
         {context}
         EXCEL CONTENT:
@@ -70,18 +133,59 @@ def ask_question():
         USER QUESTION: {question}
         Answer the question based only on the information provided.
         """
+        
         response = client.messages.create(
             model="claude-3-haiku-20240307",
             max_tokens=500,
             messages=[{"role": "user", "content": prompt}],
         )
-        if response and response.content:
-            return jsonify({'answer': response.content[0].text})
-        else:
-            return jsonify({'answer': "I'm not sure how to respond to that based on the content provided."})
+        
+        claude_answer = response.content[0].text
+        
+        if claude_answer == 'NO_ANSWER_FOUND':
+            web_results = searxng_search(question)
+            
+            if web_results:
+                web_context = "\n".join([
+                    f"Title: {result['title']}\nSnippet: {result['snippet']}\nLink: {result['link']}"
+                    for result in web_results
+                ])
+                
+                web_prompt = f"""
+                Use the following web search results to answer the question:
+                {web_context}
+                
+                USER QUESTION: {question}
+                Provide a concise and informative answer based on the search results.
+                If no relevant information is found, say "I couldn't find definitive information about this topic."
+                """
+                
+                web_response = client.messages.create(
+                    model="claude-3-haiku-20240307",
+                    max_tokens=500,
+                    messages=[{"role": "user", "content": web_prompt}],
+                )
+                
+                return jsonify({
+                    'answer': web_response.content[0].text, 
+                    'source': 'web_search',
+                    'web_results': web_results
+                })
+            
+            return jsonify({
+                'answer': "I couldn't find information about this topic.", 
+                'source': 'no_source'
+            })
+        
+        return jsonify({
+            'answer': claude_answer, 
+            'source': 'local_sources'
+        })
+    
     except Exception as e:
-        print(f"Error: {e}")
-        return jsonify({'error': 'An error occurred while generating the response.'}), 500
+        return jsonify({'error': str(e)}), 500
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    os.makedirs(os.path.join(BASE_DIR, 'static'), exist_ok=True)
+    
+    app.run(debug=True, host='0.0.0.0', port=5000)
