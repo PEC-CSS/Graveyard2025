@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <style>
+        body {
+            margin-right: 320px;
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+        }
+
+        h1 {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .section {
+            margin: 20px auto;
+            width: 80%;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            color: #4a6fa5;
+            border-bottom: 2px solid #4a6fa5;
+            padding-bottom: 5px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+
+        th,
+        td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #4a6fa5;
+            color: white;
+        }
+
+        .chat-widget {
+            position: fixed;
+            right: 0;
+            top: 0;
+            width: 300px;
+            height: 100vh;
+            background-color: #f5f5f5;
+            border-left: 1px solid #ddd;
+            display: flex;
+            flex-direction: column;
+            z-index: 1000;
+        }
+
+        .chat-header {
+            background-color: #4a6fa5;
+            color: white;
+            padding: 15px;
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .chat-messages {
+            flex-grow: 1;
+            padding: 15px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .message {
+            margin-bottom: 10px;
+            padding: 8px 12px;
+            border-radius: 18px;
+            max-width: 80%;
+            word-wrap: break-word;
+        }
+
+        .user-message {
+            background-color: #e1f5fe;
+            align-self: flex-end;
+        }
+
+        .bot-message {
+            background-color: #f0f0f0;
+            align-self: flex-start;
+        }
+
+        .chat-input {
+            padding: 15px;
+            border-top: 1px solid #ddd;
+            display: flex;
+        }
+
+        .chat-input input {
+            flex-grow: 1;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        .chat-input button {
+            padding: 10px 15px;
+            background-color: #4a6fa5;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            margin-left: 10px;
+            cursor: pointer;
+        }
+
+        .toggle-chat {
+            position: fixed;
+            right: 320px;
+            bottom: 20px;
+            background-color: #4a6fa5;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            font-size: 20px;
+            cursor: pointer;
+            display: none;
+            z-index: 1001;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                margin-right: 0;
+            }
+
+            .chat-widget {
+                transform: translateX(100%);
+                transition: transform 0.3s;
+            }
+
+            .chat-widget.open {
+                transform: translateX(0);
+            }
+
+            .toggle-chat {
+                display: block;
+                right: 20px;
+            }
+        }
+    </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nutrition Data</title>
+</head>
+
+<body>
+
+    <h1>Nutrition Data of Popular Food Items</h1>
+
+    <div class="section">
+        <h2>Fruits & Vegetables</h2>
+        <table>
+            <tr>
+                <th>Food Item</th>
+                <th>Calories</th>
+                <th>Carbs</th>
+                <th>Protein</th>
+                <th>Fat</th>
+                <th>Fiber</th>
+                <th>Vitamins</th>
+                <th>Minerals</th>
+            </tr>
+            <tr>
+                <td>Apple</td>
+                <td>57 kcal</td>
+                <td>15.5 g</td>
+                <td>0.4 g</td>
+                <td>0.3 g</td>
+                <td>2.8 g</td>
+                <td>Vitamin C</td>
+                <td>Potassium</td>
+            </tr>
+            <tr>
+                <td>Banana</td>
+                <td>96 kcal</td>
+                <td>27 g</td>
+                <td>1.3 g</td>
+                <td>0.4 g</td>
+                <td>3.1 g</td>
+                <td>Vitamin B6</td>
+                <td>Potassium</td>
+            </tr>
+            <tr>
+                <td>Broccoli</td>
+                <td>60 kcal</td>
+                <td>12 g</td>
+                <td>4.2 g</td>
+                <td>0.7 g</td>
+                <td>5.1 g</td>
+                <td>Vitamin K</td>
+                <td>Iron</td>
+            </tr>
+            <tr>
+                <td>Peas</td>
+                <td>81 kcal</td>
+                <td>14 g</td>
+                <td>5.4 g</td>
+                <td>0.4 g</td>
+                <td>5.7 g</td>
+                <td>Vitamin C</td>
+                <td>Iron</td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="section">
+        <h2>Meat & Poultry</h2>
+        <table>
+            <tr>
+                <th>Food Item</th>
+                <th>Calories</th>
+                <th>Carbs</th>
+                <th>Protein</th>
+                <th>Fat</th>
+                <th>Vitamins</th>
+                <th>Minerals</th>
+            </tr>
+            <tr>
+                <td>Chicken Breast</td>
+                <td>170 kcal</td>
+                <td>0 g</td>
+                <td>33 g</td>
+                <td>3.5 g</td>
+                <td>Niacin (B3)</td>
+                <td>Iron</td>
+            </tr>
+            <tr>
+                <td>Mutton</td>
+                <td>294 kcal</td>
+                <td>0 g</td>
+                <td>25 g</td>
+                <td>21 g</td>
+                <td>Vitamin B12</td>
+                <td>Zinc</td>
+            </tr>
+            <tr>
+                <td>Salmon (Cooked)</td>
+                <td>220 kcal</td>
+                <td>0 g</td>
+                <td>23 g</td>
+                <td>15 g</td>
+                <td>Omega-3 Fatty Acids</td>
+                <td>Selenium</td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="section">
+        <h2>Dairy & Eggs</h2>
+        <table>
+            <tr>
+                <th>Food Item</th>
+                <th>Calories</th>
+                <th>Carbs</th>
+                <th>Protein</th>
+                <th>Fat</th>
+                <th>Vitamins</th>
+                <th>Minerals</th>
+            </tr>
+            <tr>
+                <td>Milk (Whole)</td>
+                <td>65 kcal</td>
+                <td>5.1 g</td>
+                <td>3.4 g</td>
+                <td>3.5 g</td>
+                <td>Vitamin D</td>
+                <td>Calcium</td>
+            </tr>
+            <tr>
+                <td>Eggs (Boiled)</td>
+                <td>78 kcal</td>
+                <td>0.6 g</td>
+                <td>6.5 g</td>
+                <td>5.3 g</td>
+                <td>Vitamin D</td>
+                <td>Choline</td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="section">
+        <h2>Grains & Legumes</h2>
+        <table>
+            <tr>
+                <th>Food Item</th>
+                <th>Calories</th>
+                <th>Carbs</th>
+                <th>Protein</th>
+                <th>Fiber</th>
+                <th>Vitamins</th>
+                <th>Minerals</th>
+            </tr>
+            <tr>
+                <td>Rice (White, Cooked)</td>
+                <td>140 kcal</td>
+                <td>30 g</td>
+                <td>3.1 g</td>
+                <td>0.6 g</td>
+                <td>Thiamine</td>
+                <td>Iron</td>
+            </tr>
+            <tr>
+                <td>Peas</td>
+                <td>81 kcal</td>
+                <td>14 g</td>
+                <td>5.4 g</td>
+                <td>5.7 g</td>
+                <td>Vitamin C</td>
+                <td>Iron</td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="section">
+        <h2>Snacks & Processed Foods</h2>
+        <table>
+            <tr>
+                <th>Food Item</th>
+                <th>Calories</th>
+                <th>Carbs</th>
+                <th>Protein</th>
+                <th>Fat</th>
+                <th>Fiber</th>
+                <th>Sodium</th>
+            </tr>
+            <tr>
+                <td>Chips (Potato)</td>
+                <td>530 kcal</td>
+                <td>52 g</td>
+                <td>7 g</td>
+                <td>35 g</td>
+                <td>4.0 g</td>
+                <td>580 mg</td>
+            </tr>
+            <tr>
+                <td>Soup (Vegetable)</td>
+                <td>90 kcal</td>
+                <td>12 g</td>
+                <td>3.8 g</td>
+                <td>3.0 g</td>
+                <td>4.5 g</td>
+                <td>450 mg</td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="chat-widget" id="chatWidget">
+        <div class="chat-header">
+            <span>Chat with us</span>
+            <button onclick="toggleChat()" style="background: none; border: none; color: white; cursor: pointer;">✕
+            </button>
+        </div>
+        <div class="chat-messages" id="chatMessages">
+            <div class="message bot-message">Hi there! How can I help you today?</div>
+        </div>
+        <div class="chat-input">
+            <input type="text" id="userInput" placeholder="Type your question..."
+                onkeypress="if(event.key === 'Enter') sendMessage()">
+            <button onclick="sendMessage()">Send</button>
+        </div>
+    </div>
+
+    <button class="toggle-chat" id="toggleChatBtn" onclick="toggleChat()">💬</button>
+
+    <script>
+        const pageContent = document.body.innerText;
+
+        function toggleChat() {
+            const chatWidget = document.getElementById('chatWidget');
+            chatWidget.classList.toggle('open');
+        }
+
+        async function sendMessage() {
+            const userInput = document.getElementById('userInput');
+            const message = userInput.value.trim();
+
+            if (message === '') return;
+
+            const chatMessages = document.getElementById('chatMessages');
+            chatMessages.innerHTML += `<div class="message user-message">${message}</div>`;
+            userInput.value = '';
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+
+            chatMessages.innerHTML += `<div class="message bot-message" id="loading">Thinking...</div>`;
+
+            try {
+                const response = await fetch('/api/ask', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        question: message,
+                        content: pageContent
+                    }),
+                });
+
+                const data = await response.json();
+                document.getElementById('loading').remove();
+
+                if (data.answer) {
+                    chatMessages.innerHTML += `<div class="message bot-message">${data.answer}</div>`;
+                } else {
+                    chatMessages.innerHTML += `<div class="message bot-message">Sorry, I couldn't process that request.</div>`;
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                document.getElementById('loading').remove();
+                chatMessages.innerHTML += `<div class="message bot-message">There was an error processing your request.</div>`;
+            }
+
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        function handleResize() {
+            const chatWidget = document.getElementById('chatWidget');
+            const toggleBtn = document.getElementById('toggleChatBtn');
+
+            if (window.innerWidth <= 768) {
+                chatWidget.classList.remove('open');
+                toggleBtn.style.display = 'block';
+            } else {
+                toggleBtn.style.display = 'none';
+            }
+        }
+
+        window.addEventListener('resize', handleResize);
+        handleResize();
+    </script>
+</body>
+
+</html>
